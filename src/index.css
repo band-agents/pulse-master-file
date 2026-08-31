@@ -1,0 +1,565 @@
+/* IBM Plex Sans Arabic carries both scripts in one family — Arabic and Latin
+   share a skeleton, so a bilingual screen does not visibly change typeface
+   mid-sentence. Plex Mono is used for codes, MRNs and every tabular figure. */
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
+@import "tailwindcss";
+@import "tw-animate-css";
+@plugin "@tailwindcss/typography";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-card-border: hsl(var(--card-border));
+
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-popover-border: hsl(var(--popover-border));
+
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-primary-border: var(--primary-border);
+
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-secondary-border: var(--secondary-border);
+
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-muted-border: var(--muted-border);
+
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-accent-border: var(--accent-border);
+
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-destructive-border: var(--destructive-border);
+
+  --color-brand: hsl(var(--brand));
+  --color-brand-ink: hsl(var(--brand-ink));
+  --color-brand-wash: hsl(var(--brand-wash));
+
+  --color-success: hsl(var(--success));
+  --color-success-foreground: hsl(var(--success-foreground));
+  --color-warning: hsl(var(--warning));
+  --color-warning-foreground: hsl(var(--warning-foreground));
+  --color-info: hsl(var(--info));
+  --color-info-foreground: hsl(var(--info-foreground));
+
+  /* Analytics accent — the BI layer is deliberately a different hue family
+     from every clinical status colour, so a chart series can never be read
+     as a severity. */
+  --color-data: hsl(var(--data));
+  --color-data-wash: hsl(var(--data-wash));
+
+  --color-chart-1: hsl(var(--chart-1));
+  --color-chart-2: hsl(var(--chart-2));
+  --color-chart-3: hsl(var(--chart-3));
+  --color-chart-4: hsl(var(--chart-4));
+  --color-chart-5: hsl(var(--chart-5));
+  --color-chart-6: hsl(var(--chart-6));
+  --color-chart-7: hsl(var(--chart-7));
+  --color-chart-8: hsl(var(--chart-8));
+
+  --color-sidebar: hsl(var(--sidebar));
+  --color-sidebar-foreground: hsl(var(--sidebar-foreground));
+  --color-sidebar-border: hsl(var(--sidebar-border));
+  --color-sidebar-primary: hsl(var(--sidebar-primary));
+  --color-sidebar-primary-foreground: hsl(var(--sidebar-primary-foreground));
+  --color-sidebar-primary-border: var(--sidebar-primary-border);
+  --color-sidebar-accent: hsl(var(--sidebar-accent));
+  --color-sidebar-accent-foreground: hsl(var(--sidebar-accent-foreground));
+  --color-sidebar-accent-border: var(--sidebar-accent-border);
+  --color-sidebar-ring: hsl(var(--sidebar-ring));
+
+  /* ── Type scale ───────────────────────────────────────────
+     Seven steps. Nothing renders below 11px, and every step carries its own
+     line-height — a clinical screen is read for twelve hours at a stretch. */
+  --text-micro: 0.6875rem;        /* 11px — badges, counts, timestamps */
+  --text-micro--line-height: 1.45;
+  --text-caption: 0.75rem;        /* 12px — labels, table meta, eyebrows */
+  --text-caption--line-height: 1.45;
+  --text-body: 0.8125rem;         /* 13px — default body, table cells */
+  --text-body--line-height: 1.55;
+  --text-body-lg: 0.875rem;       /* 14px — emphasised body, inputs */
+  --text-body-lg--line-height: 1.55;
+  --text-title: 1.0625rem;        /* 17px — card and section titles */
+  --text-title--line-height: 1.35;
+  --text-heading: 1.3125rem;      /* 21px — page section headings */
+  --text-heading--line-height: 1.25;
+  --text-display: 1.625rem;       /* 26px — page titles, hero numbers */
+  --text-display--line-height: 1.15;
+
+  --font-sans: var(--app-font-sans);
+  --font-serif: var(--app-font-display);
+  --font-display: var(--app-font-display);
+  --font-mono: var(--app-font-mono);
+
+  --radius-sm: calc(var(--radius) - 3px);
+  --radius-md: calc(var(--radius) - 1px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 3px);
+  --radius-2xl: calc(var(--radius) + 7px);
+}
+
+/* ══════════════════════════════════════════════════════════
+   AL-OBOUR GENERAL HOSPITAL — CLINICAL PALETTE
+   ══════════════════════════════════════════════════════════
+   The signature is a deep medical teal on a cool, near-white ground.
+
+   One rule governs the whole system, and it is the opposite of a
+   consumer-brand rule: the primary is dark enough to be BOTH a fill and
+   an ink. Teal at 30% lightness clears 7:1 on the canvas, so a link, an
+   icon and a filled button can all use the same token without a separate
+   "safe text" colour and without anyone having to remember an exception.
+
+   Status hues are reserved. Green, amber and red mean stable, caution and
+   critical — nothing decorative is allowed to borrow them, because on a
+   ward a red chip has to mean one thing only. Chart series live in their
+   own hue family (--chart-*) for the same reason.
+   ══════════════════════════════════════════════════════════ */
+
+/* ─── LIGHT ──────────────────────────────────────────────── */
+:root {
+  --button-outline: rgba(9, 30, 38, .06);
+  --badge-outline: rgba(9, 30, 38, .05);
+
+  --opaque-button-border-intensity: -8;
+
+  --elevate-1: rgba(12, 40, 50, .028);
+  --elevate-2: rgba(12, 40, 50, .06);
+
+  /* Cool clinical ground — a hair of teal in the grey, never warm. */
+  --background: 200 24% 97%;
+  --foreground: 202 32% 15%;
+  --border: 200 18% 88%;
+
+  --card: 0 0% 100%;
+  --card-foreground: 202 32% 15%;
+  --card-border: 200 18% 89%;
+
+  /* Chrome sits a step cooler and darker than the canvas. */
+  --sidebar: 202 26% 94%;
+  --sidebar-foreground: 202 30% 18%;
+  --sidebar-border: 200 18% 87%;
+  --sidebar-primary: 184 72% 28%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 186 42% 90%;
+  --sidebar-accent-foreground: 190 45% 20%;
+  --sidebar-ring: 184 72% 30%;
+
+  --popover: 0 0% 100%;
+  --popover-foreground: 202 32% 15%;
+  --popover-border: 200 18% 89%;
+
+  /* Medical teal. Legal as a fill AND as ink — see the note above. */
+  --primary: 184 74% 28%;
+  --primary-foreground: 0 0% 100%;
+
+  --secondary: 200 20% 93%;
+  --secondary-foreground: 202 28% 22%;
+
+  --muted: 200 20% 94%;
+  --muted-foreground: 202 12% 44%;
+
+  --accent: 186 44% 91%;
+  --accent-foreground: 190 45% 20%;
+
+  --destructive: 358 66% 46%;
+  --destructive-foreground: 0 0% 100%;
+
+  --input: 200 14% 55%;
+  --ring: 184 74% 32%;
+
+  /* Brand triad. `brand` is the light fill, `brand-ink` the legible ink,
+     `brand-wash` the selected-row tint. */
+  --brand: 184 74% 28%;
+  --brand-ink: 185 78% 24%;
+  --brand-wash: 186 48% 94%;
+
+  /* Reserved status hues. */
+  --success: 154 58% 30%;
+  --success-foreground: 0 0% 100%;
+  --warning: 32 84% 38%;
+  --warning-foreground: 0 0% 100%;
+  --info: 205 78% 38%;
+  --info-foreground: 0 0% 100%;
+
+  /* Analytics accent — indigo, deliberately outside the status families. */
+  --data: 256 56% 48%;
+  --data-wash: 256 60% 95%;
+
+  /* Eight chart series, checked for separability under deuteranopia and
+     protanopia and against the teal chrome they sit on. Ordered so the
+     first three are the most distinct — most charts use only those. */
+  --chart-1: 196 76% 38%;
+  --chart-2: 256 52% 54%;
+  --chart-3: 28 82% 46%;
+  --chart-4: 166 58% 32%;
+  --chart-5: 340 58% 50%;
+  --chart-6: 212 60% 44%;
+  --chart-7: 44 76% 42%;
+  --chart-8: 288 40% 46%;
+
+  /* One family for both scripts; mono for every identifier and figure. */
+  --app-font-sans: 'IBM Plex Sans Arabic', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --app-font-display: 'IBM Plex Sans Arabic', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --app-font-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  /* Crisper than a consumer product. Clinical density reads better square. */
+  --radius: 0.625rem;
+
+  /* Cool-tinted shadows — a warm shadow on a cool ground looks dirty. */
+  --shadow-2xs: 0 1px 2px 0 hsl(202 40% 16% / .04);
+  --shadow-xs:  0 1px 3px 0 hsl(202 40% 16% / .05), 0 1px 2px -1px hsl(202 40% 16% / .04);
+  --shadow-sm:  0 2px 4px 0 hsl(202 40% 16% / .05), 0 1px 3px -1px hsl(202 40% 16% / .04);
+  --shadow:     0 4px 8px -1px hsl(202 40% 16% / .07), 0 2px 4px -2px hsl(202 40% 16% / .04);
+  --shadow-md:  0 8px 16px -3px hsl(202 40% 16% / .08), 0 4px 6px -4px hsl(202 40% 16% / .04);
+  --shadow-lg:  0 16px 28px -5px hsl(202 40% 16% / .09), 0 8px 10px -6px hsl(202 40% 16% / .04);
+  --shadow-xl:  0 24px 40px -8px hsl(202 40% 16% / .10), 0 12px 16px -8px hsl(202 40% 16% / .04);
+  --shadow-2xl: 0 40px 64px -12px hsl(202 40% 16% / .16);
+
+  --tracking-normal: -0.009em;
+  --spacing: 0.25rem;
+
+  /* Hospital mark — teal cross with a pulse trace. */
+  --logo-ink: #0B3D46;
+  --logo-accent: #12817F;
+
+  --sidebar-primary-border: hsl(var(--sidebar-primary));
+  --sidebar-primary-border: hsl(from hsl(var(--sidebar-primary)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+  --sidebar-accent-border: hsl(var(--sidebar-accent));
+  --sidebar-accent-border: hsl(from hsl(var(--sidebar-accent)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+  --primary-border: hsl(var(--primary));
+  --primary-border: hsl(from hsl(var(--primary)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+  --secondary-border: hsl(var(--secondary));
+  --secondary-border: hsl(from hsl(var(--secondary)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+  --muted-border: hsl(var(--muted));
+  --muted-border: hsl(from hsl(var(--muted)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+  --accent-border: hsl(var(--accent));
+  --accent-border: hsl(from hsl(var(--accent)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+  --destructive-border: hsl(var(--destructive));
+  --destructive-border: hsl(from hsl(var(--destructive)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+}
+
+/* ─── DARK ───────────────────────────────────────────────── */
+/* Night shifts run on this. The ground is a deep desaturated slate-blue,
+   never pure black: a true black panel next to a lit corridor is harder to
+   read, not easier. Teal lifts to 46% lightness so it stays legible without
+   glowing. */
+.dark {
+  --button-outline: rgba(255, 255, 255, .07);
+  --badge-outline: rgba(255, 255, 255, .05);
+
+  --opaque-button-border-intensity: 8;
+
+  --elevate-1: rgba(214, 238, 244, .04);
+  --elevate-2: rgba(214, 238, 244, .085);
+
+  --background: 204 30% 9%;
+  --foreground: 195 20% 92%;
+  --border: 204 16% 22%;
+
+  --card: 204 26% 13%;
+  --card-foreground: 195 20% 92%;
+  --card-border: 204 16% 22%;
+
+  --sidebar: 205 32% 7%;
+  --sidebar-foreground: 195 20% 92%;
+  --sidebar-border: 204 18% 17%;
+  --sidebar-primary: 180 58% 46%;
+  --sidebar-primary-foreground: 200 45% 8%;
+  --sidebar-accent: 200 18% 20%;
+  --sidebar-accent-foreground: 186 40% 88%;
+  --sidebar-ring: 180 58% 48%;
+
+  --popover: 204 26% 12%;
+  --popover-foreground: 195 20% 92%;
+  --popover-border: 204 16% 22%;
+
+  --primary: 180 58% 44%;
+  --primary-foreground: 200 50% 8%;
+
+  --secondary: 204 14% 19%;
+  --secondary-foreground: 195 20% 92%;
+
+  --muted: 204 14% 18%;
+  --muted-foreground: 200 10% 62%;
+
+  --accent: 200 18% 21%;
+  --accent-foreground: 186 40% 88%;
+
+  --destructive: 358 62% 58%;
+  --destructive-foreground: 355 30% 10%;
+
+  --input: 204 14% 42%;
+  --ring: 180 58% 48%;
+
+  --brand: 180 58% 44%;
+  --brand-ink: 180 56% 62%;
+  --brand-wash: 190 34% 18%;
+
+  --success: 154 48% 52%;
+  --success-foreground: 154 40% 8%;
+  --warning: 36 78% 58%;
+  --warning-foreground: 36 45% 8%;
+  --info: 205 70% 60%;
+  --info-foreground: 205 45% 8%;
+
+  --data: 256 62% 68%;
+  --data-wash: 256 32% 20%;
+
+  --chart-1: 195 70% 56%;
+  --chart-2: 256 60% 70%;
+  --chart-3: 28 80% 60%;
+  --chart-4: 166 52% 50%;
+  --chart-5: 340 62% 66%;
+  --chart-6: 212 62% 62%;
+  --chart-7: 44 74% 58%;
+  --chart-8: 288 44% 64%;
+
+  --shadow-2xs: 0 1px 2px 0 hsl(205 45% 3% / .34);
+  --shadow-xs:  0 1px 3px 0 hsl(205 45% 3% / .40), 0 1px 2px -1px hsl(205 45% 3% / .28);
+  --shadow-sm:  0 2px 4px 0 hsl(205 45% 3% / .40), 0 1px 3px -1px hsl(205 45% 3% / .28);
+  --shadow:     0 4px 8px -1px hsl(205 45% 3% / .44), 0 2px 4px -2px hsl(205 45% 3% / .28);
+  --shadow-md:  0 8px 16px -3px hsl(205 45% 3% / .48), 0 4px 6px -4px hsl(205 45% 3% / .28);
+  --shadow-lg:  0 16px 28px -5px hsl(205 45% 3% / .54), 0 8px 10px -6px hsl(205 45% 3% / .28);
+  --shadow-xl:  0 24px 40px -8px hsl(205 45% 3% / .58), 0 12px 16px -8px hsl(205 45% 3% / .28);
+  --shadow-2xl: 0 40px 64px -12px hsl(205 45% 3% / .68);
+
+  --logo-ink: #E8F4F6;
+  --logo-accent: #2FB6B0;
+
+  --sidebar-primary-border: hsl(var(--sidebar-primary));
+  --sidebar-primary-border: hsl(from hsl(var(--sidebar-primary)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+  --sidebar-accent-border: hsl(var(--sidebar-accent));
+  --sidebar-accent-border: hsl(from hsl(var(--sidebar-accent)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+  --primary-border: hsl(var(--primary));
+  --primary-border: hsl(from hsl(var(--primary)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+  --secondary-border: hsl(var(--secondary));
+  --secondary-border: hsl(from hsl(var(--secondary)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+  --muted-border: hsl(var(--muted));
+  --muted-border: hsl(from hsl(var(--muted)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+  --accent-border: hsl(var(--accent));
+  --accent-border: hsl(from hsl(var(--accent)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+  --destructive-border: hsl(var(--destructive));
+  --destructive-border: hsl(from hsl(var(--destructive)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+    font-weight: 400;
+    letter-spacing: -0.011em;
+    font-feature-settings: "kern" 1, "liga" 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3 {
+    font-family: var(--app-font-display);
+    font-weight: 600;
+    letter-spacing: -0.022em;
+  }
+
+  h4, h5, h6 {
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+
+  /* Refined focus ring */
+  :focus-visible {
+    outline: 2px solid hsl(var(--ring));
+    outline-offset: 2px;
+    border-radius: calc(var(--radius) - 2px);
+  }
+
+  /* Smooth scrollbar */
+  ::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--border));
+    border-radius: 99px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--muted-foreground) / 0.4);
+  }
+}
+
+/* ─── SURFACE UTILITIES ───────────────────────────── */
+
+@layer utilities {
+
+  /* Liquid-glass surface — frosted translucency for chrome (sidebar, headers,
+     toolbars, popovers). Apple-like depth without heavy contrast. */
+  .bb-glass {
+    background-color: hsl(var(--background) / 0.72);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border-color: hsl(var(--border) / 0.6);
+  }
+
+  /* Quiet card with elegant shadow — use instead of bare bg-card */
+  .bb-card {
+    background-color: hsl(var(--card));
+    border: 1px solid hsl(var(--card-border));
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+  }
+
+  /* Elevated card — for modals, popovers, selection states */
+  .bb-card-elevated {
+    background-color: hsl(var(--card));
+    border: 1px solid hsl(var(--card-border));
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-md);
+  }
+
+  /* Serif display text — for headings, hero, onboarding */
+  .bb-heading {
+    font-family: var(--app-font-display);
+    font-weight: 500;
+    letter-spacing: -0.025em;
+  }
+
+  /* Eyebrow label — small, tracked, uppercase */
+  .bb-eyebrow {
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: hsl(var(--muted-foreground));
+  }
+
+  /* Sage tinted surface for selected/active states */
+  .bb-selected {
+    background-color: hsl(120 11% 91%);
+    border-color: hsl(120 11% 82%);
+  }
+
+  /* Primary selected — lilac tint */
+  .bb-primary-selected {
+    background-color: hsl(var(--primary) / 0.08);
+    border-color: hsl(var(--primary) / 0.25);
+  }
+
+  /* ─── Input refinement ─── */
+  input[type="search"]::-webkit-search-cancel-button {
+    @apply hidden;
+  }
+
+  [contenteditable][data-placeholder]:empty::before {
+    content: attr(data-placeholder);
+    color: hsl(var(--muted-foreground));
+    pointer-events: none;
+  }
+
+  /* ─── Elevation system ─── */
+  .no-default-hover-elevate {}
+  .no-default-active-elevate {}
+
+  .toggle-elevate::before,
+  .toggle-elevate-2::before {
+    content: "";
+    pointer-events: none;
+    position: absolute;
+    inset: 0px;
+    border-radius: inherit;
+    z-index: -1;
+  }
+
+  .toggle-elevate.toggle-elevated::before {
+    background-color: var(--elevate-2);
+  }
+
+  .border.toggle-elevate::before {
+    inset: -1px;
+  }
+
+  .hover-elevate:not(.no-default-hover-elevate),
+  .active-elevate:not(.no-default-active-elevate),
+  .hover-elevate-2:not(.no-default-hover-elevate),
+  .active-elevate-2:not(.no-default-active-elevate) {
+    position: relative;
+    z-index: 0;
+  }
+
+  .hover-elevate:not(.no-default-hover-elevate)::after,
+  .active-elevate:not(.no-default-active-elevate)::after,
+  .hover-elevate-2:not(.no-default-hover-elevate)::after,
+  .active-elevate-2:not(.no-default-active-elevate)::after {
+    content: "";
+    pointer-events: none;
+    position: absolute;
+    inset: 0px;
+    border-radius: inherit;
+    z-index: 999;
+  }
+
+  .hover-elevate:hover:not(.no-default-hover-elevate)::after,
+  .active-elevate:active:not(.no-default-active-elevate)::after {
+    background-color: var(--elevate-1);
+  }
+
+  .hover-elevate-2:hover:not(.no-default-hover-elevate)::after,
+  .active-elevate-2:active:not(.no-default-active-elevate)::after {
+    background-color: var(--elevate-2);
+  }
+
+  .border.hover-elevate:not(.no-hover-interaction-elevate)::after,
+  .border.active-elevate:not(.no-active-interaction-elevate)::after,
+  .border.hover-elevate-2:not(.no-hover-interaction-elevate)::after,
+  .border.active-elevate-2:not(.no-active-interaction-elevate)::after {
+    inset: -1px;
+  }
+
+  /* ─── RTL compatibility ─── */
+  [dir="rtl"] .bb-card,
+  [dir="rtl"] .bb-card-elevated {
+    text-align: right;
+  }
+
+  /* ── Primary press states ────────────────────────────────
+     The generic elevate overlay is a black wash. Over lilac that read as a
+     press; over yellow it reads as dirt. Primary surfaces therefore darken
+     the hue itself instead of taking the overlay.
+     Light: 58% -> 53% -> 48%.  Dark: 68% -> 63% -> 58%. */
+  .bg-primary.hover-elevate::after,
+  .bg-primary.hover-elevate-2::after,
+  .bg-primary.active-elevate::after,
+  .bg-primary.active-elevate-2::after {
+    background-color: transparent;
+  }
+
+  .bg-primary.hover-elevate:hover,
+  .bg-primary.hover-elevate-2:hover {
+    background-color: hsl(46 88% 53%);
+    background-color: hsl(from hsl(var(--primary)) h s calc(l - 5));
+  }
+
+  .bg-primary.hover-elevate:active,
+  .bg-primary.hover-elevate-2:active,
+  .bg-primary.active-elevate:active,
+  .bg-primary.active-elevate-2:active {
+    background-color: hsl(46 88% 48%);
+    background-color: hsl(from hsl(var(--primary)) h s calc(l - 10));
+  }
+
+}

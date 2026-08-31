@@ -1,0 +1,11 @@
+node_modules
+dist
+.env.local
+.env.development.local
+.env*.bak
+.env.local.bak
+.tsbuildinfo
+.DS_Store
+.vscode
+test-results
+playwright-report

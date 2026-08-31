@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "THOTH"
+version = "1.0.0"
+id = "artifacts/thoth"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 20527
+
+[services.development]
+run = "pnpm --filter @workspace/thoth run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/thoth", "run", "build" ]
+publicDir = "artifacts/thoth/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "20527"
+BASE_PATH = "/"
