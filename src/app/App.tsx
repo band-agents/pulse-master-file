@@ -1,13 +1,21 @@
 /**
  * Al-Madinah Hospital — application root.
  *
- * There is no route table here. Every clinical and administrative route is
- * generated from `modules/registry`, so the router cannot disagree with the
- * navigation, and adding a department means adding a manifest and nothing
- * else.
+ * Three applications live here, over one record:
  *
- * The shell is deliberately thin: a top bar, and whatever module currently
- * owns the viewport.
+ *   /         the hospital system — every department, for staff
+ *   /clinic   the clinician workspace — patients ranked by acuity
+ *   /portal   the patient portal — four things, in large type
+ *
+ * They are separate because the three jobs are separate, and they are
+ * connected because they read and write the same store. A booking made in the
+ * portal is not copied to the hospital system; it is the row the hospital
+ * system reads.
+ *
+ * Within the hospital system there is no route table. Every clinical and
+ * administrative route is generated from `modules/registry`, so the router
+ * cannot disagree with the navigation, and adding a department means adding a
+ * manifest and nothing else.
  */
 
 import { lazy, Suspense, useMemo } from "react";
@@ -20,12 +28,14 @@ import { Toaster } from "@/platform/ui/primitives/sonner";
 import { TooltipProvider } from "@/platform/ui/primitives/tooltip";
 import { LanguageProvider } from "@/app/context/LanguageContext";
 import { AuthProvider, useAuth } from "@/app/context/AuthContext";
+import { PersonaProvider } from "@/app/context/PersonaContext";
 import { isDemoMode } from "@/platform/lib/supabase";
 import { Logo } from "@/app/components/Logo";
 import { RouteErrorBoundary } from "@/app/components/RouteErrorBoundary";
 
 import { RoleProvider } from "./shell/RoleContext";
 import { CommandPaletteProvider } from "./shell/CommandPalette";
+import { NewEntryProvider } from "./shell/NewEntry";
 import { TopBar } from "./shell/TopBar";
 import { ModuleFrame } from "./shell/ModuleFrame";
 import { ROUTED_VIEWS } from "@/modules/registry";
@@ -39,11 +49,13 @@ import NotFound from "./pages/not-found";
 
 const Hub = lazy(() => import("./shell/Hub"));
 const ActivityFeed = lazy(() => import("./pages/ActivityFeed"));
+const ClinicianApp = lazy(() => import("@/apps/clinician/ClinicianApp"));
+const PortalApp = lazy(() => import("@/apps/portal/PortalApp"));
 
 /**
  * Dev bypass. With VITE_SKIP_AUTH=true the app opens straight on the Hub —
- * no landing page, no sign-in. Set in .env.development.local; delete that
- * file to restore the normal flow.
+ * no sign-in. Set in .env.development.local; delete that file to restore the
+ * normal flow.
  */
 const SKIP_AUTH = import.meta.env.VITE_SKIP_AUTH === "true";
 
@@ -69,7 +81,7 @@ function BootScreen() {
   );
 }
 
-// ─── Shell ────────────────────────────────────────────────
+// ─── Hospital system shell ────────────────────────────────
 
 function Shell() {
   const [location] = useLocation();
@@ -116,11 +128,26 @@ function Shell() {
   );
 }
 
-function AppShell() {
+/**
+ * Which of the three applications is on screen.
+ *
+ * The providers wrap all three rather than sitting inside each, so switching
+ * persona keeps the language, the theme and the open New panel — and so the
+ * New button behaves identically whichever application you are in.
+ */
+function Applications() {
+  const [path] = useLocation();
+
   return (
     <RoleProvider>
       <CommandPaletteProvider>
-        <Shell />
+        <NewEntryProvider>
+          <Suspense fallback={<BootScreen />}>
+            {path.startsWith("/portal") ? <PortalApp />
+              : path.startsWith("/clinic") ? <ClinicianApp />
+              : <Shell />}
+          </Suspense>
+        </NewEntryProvider>
       </CommandPaletteProvider>
     </RoleProvider>
   );
@@ -132,10 +159,9 @@ function AppShell() {
  * Entry guard.
  *
  * There is no landing page. Al-Madinah is internal hospital software, not a
- * product with a public front door — anyone reaching it is staff who want the
- * system, and putting a brochure in front of a nurse on a night shift is a
- * cost with no benefit. `/` is either the Hub or the sign-in screen, never
- * marketing.
+ * product with a public front door — anyone reaching it is staff or a patient
+ * who wants the system, and putting a brochure in front of a nurse on a night
+ * shift is a cost with no benefit.
  */
 function Router() {
   const { isAuthenticated, loading, workspace, workspaceLoading } = useAuth();
@@ -147,10 +173,10 @@ function Router() {
   if (path.startsWith("/invite/")) return <InviteAccept />;
 
   // Demo deployments have no Supabase credentials and the dev bypass skips
-  // auth outright. Both open straight on the Hub.
+  // auth outright. Both open straight on the application.
   if (SKIP_AUTH || isDemoMode) {
     if (path === "/auth" || path.startsWith("/auth/")) return <Redirect to="/" />;
-    return <AppShell />;
+    return <Applications />;
   }
 
   // The OAuth callback must render before the guards, or they intercept the
@@ -162,7 +188,7 @@ function Router() {
   if (workspaceLoading) return <BootScreen />;
   if (!workspace) return <WorkspaceSetup />;
 
-  return <AppShell />;
+  return <Applications />;
 }
 
 export default function App() {
@@ -172,10 +198,12 @@ export default function App() {
         <TooltipProvider>
           <LanguageProvider>
             <AuthProvider>
+              <PersonaProvider>
                 <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
                   <Router />
                 </WouterRouter>
                 <Toaster />
+              </PersonaProvider>
             </AuthProvider>
           </LanguageProvider>
         </TooltipProvider>

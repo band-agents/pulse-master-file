@@ -20,6 +20,8 @@ import { Logo } from "@/app/components/Logo";
 import { moduleForPath, viewForPath } from "@/modules/registry";
 import { useRole } from "./RoleContext";
 import { usePalette } from "./CommandPalette";
+import { PersonaSwitcher } from "./PersonaSwitcher";
+import { NewEntryButton } from "./NewEntry";
 import { serif, TONE_PILL } from "@/platform/ui";
 import { BRAND } from "@/platform/lib/brand";
 
@@ -87,6 +89,13 @@ export function TopBar({ alertCount = 0 }: { alertCount?: number }) {
         </span>
         <kbd className="hidden md:block text-micro border border-border/60 rounded px-1 ms-1 shrink-0">⌘K</kbd>
       </button>
+
+      {/* Recording something new is the most common reason to touch this
+          bar, so it is a filled button rather than an icon to discover. */}
+      <NewEntryButton />
+
+      {/* Which of the three applications you are in. */}
+      <PersonaSwitcher />
 
       {/* Role */}
       <div className="relative shrink-0">

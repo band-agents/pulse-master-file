@@ -11,6 +11,7 @@ import { useAuth } from "@/app/context/AuthContext";
 import { getDataSource } from "@/platform/data/repository";
 import { generateCode, peekNextCode } from "@/platform/lib/code-generator";
 import { exportCSV, downloadTemplate } from "@/platform/lib/csv-export";
+import { exportName } from "@/platform/lib/brand";
 import type { Database } from "@/domain/types";
 import {
   Truck, Building2, FileText, Plus, Search, X, Loader2, AlertCircle, Download,
@@ -605,7 +606,7 @@ export default function Purchasing() {
               </div>
               <div className="flex-1" />
               {suppliers.length > 0 && (
-                <button onClick={() => exportCSV(suppliers, `bumblebee-suppliers-${new Date().toISOString().slice(0,10)}.csv`)} className="flex items-center gap-1.5 h-9 px-3 rounded-xl border border-border/60 text-caption font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors">
+                <button onClick={() => exportCSV(suppliers, exportName("suppliers") + ".csv")} className="flex items-center gap-1.5 h-9 px-3 rounded-xl border border-border/60 text-caption font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors">
                   <Download size={13} /> {ar ? "صدّر" : "Export"}
                 </button>
               )}
@@ -695,7 +696,7 @@ export default function Purchasing() {
               </div>
               <div className="flex-1" />
               {purchaseOrders.length > 0 && (
-                <button onClick={() => { const rows = purchaseOrders.map((p) => { const m = getPRMeta(p); return { po_number: m.po_number, title: p.title_en, supplier: m.vendor_name, amount: m.estimated_amount, status: p.status, delivery_date: m.delivery_date, created_at: p.created_at }; }); exportCSV(rows, `bumblebee-purchase-orders-${new Date().toISOString().slice(0,10)}.csv`); }}
+                <button onClick={() => { const rows = purchaseOrders.map((p) => { const m = getPRMeta(p); return { po_number: m.po_number, title: p.title_en, supplier: m.vendor_name, amount: m.estimated_amount, status: p.status, delivery_date: m.delivery_date, created_at: p.created_at }; }); exportCSV(rows, exportName("purchase-orders") + ".csv"); }}
                   className="flex items-center gap-1.5 h-9 px-3 rounded-xl border border-border/60 text-caption font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors">
                   <Download size={13} /> {ar ? "صدّر" : "Export"}
                 </button>

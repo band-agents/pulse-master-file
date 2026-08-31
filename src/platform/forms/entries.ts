@@ -20,6 +20,7 @@ import {
   UserPlus, CalendarPlus, BedDouble, Activity, ClipboardPlus, Pill,
   FileText, Stethoscope, ShieldAlert, FlaskConical, Scan, MessageSquarePlus,
 } from "lucide-react";
+import type { Snapshot } from "@/platform/data/snapshot";
 import type { EntryForm, FieldOption, Values } from "./types";
 import { nextNumber } from "@/platform/lib/numbering";
 import { computeNews2 } from "@/platform/clinical/scores";
@@ -33,16 +34,12 @@ const num = (v: unknown): number | null => {
   const n = Number(v);
   return Number.isFinite(n) ? n : null;
 };
-const todayISO = () => new Date().toISOString().slice(0, 10);
 const nowLocalISO = () => {
   // datetime-local wants no timezone suffix and no seconds.
   const d = new Date();
   d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
   return d.toISOString().slice(0, 16);
 };
-const toISO = (localValue: unknown): string =>
-  localValue ? new Date(String(localValue)).toISOString() : new Date().toISOString();
-
 // ─── Shared option sets ────────────────────────────────────
 
 const SEX = [
@@ -88,29 +85,26 @@ const FREQUENCIES = [
 
 // ─── Dynamic option sources ────────────────────────────────
 
-const departmentOptions = (s: { departments: { id: string; name_en: string; name_ar: string | null }[] }) =>
+const departmentOptions = (s: Snapshot) =>
   s.departments.map((d) => opt(d.id, d.name_en, d.name_ar || d.name_en));
 
-const wardOptions = (s: { wards: { id: string; name_en: string; name_ar: string | null }[] }) =>
+const wardOptions = (s: Snapshot) =>
   s.wards.map((w) => opt(w.id, w.name_en, w.name_ar || w.name_en));
 
 /** Beds that can actually receive a patient, in the chosen ward. */
-const freeBedOptions = (
-  s: { beds: { id: string; ward_id: string; label: string; status: string }[] },
-  values: Values,
-) =>
+const freeBedOptions = (s: Snapshot, values: Values) =>
   s.beds
     .filter((b) => b.status === "available" && (!values.ward_id || b.ward_id === values.ward_id))
     .map((b) => opt(b.id, b.label, b.label));
 
 /** A patient's open visits — what a note or an observation attaches to. */
-const openEncounterOptions = (
-  s: { encounters: { id: string; patient_id: string; encounter_number: string; department_name: string; status: string }[] },
-  values: Values,
-) =>
+const openEncounterOptions = (s: Snapshot, values: Values) =>
   s.encounters
     .filter((e) => e.patient_id === values.patient_id && e.status !== "discharged" && e.status !== "cancelled")
-    .map((e) => opt(e.id, `${e.encounter_number} · ${e.department_name}`, `${e.encounter_number} · ${e.department_name}`));
+    .map((e) => {
+      const label = `${e.encounter_number} · ${e.department_name ?? "—"}`;
+      return opt(e.id, label, label);
+    });
 
 // ─── The catalogue ─────────────────────────────────────────
 
@@ -1125,5 +1119,3 @@ export function entriesForPersona(kind: "staff" | "clinician" | "patient"): Entr
   return ENTRY_FORMS.filter((f) => f.personas.includes(kind));
 }
 
-/** Kept for the department picker, which reads it rather than a hard list. */
-export { departmentOptions, todayISO, toISO };
