@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <!-- Al-Madinah Hospital app icon. Same three ideas as the in-app mark:
+       shield (hospital), cross (care), trace (monitored). -->
+  <rect width="512" height="512" rx="114" fill="#0E6BB8"/>
+  <path d="M216 120h80v72h72v80h-72v72h-80v-72h-72v-80h72v-72Z" fill="#FFFFFF" opacity="0.97"/>
+  <path d="M32 248h84l32-56 46 114 40-80 29 46h97"
+        stroke="#0A3355" stroke-width="29" stroke-linecap="round"
+        stroke-linejoin="round" fill="none"/>
+</svg>

@@ -1,5 +1,5 @@
 /**
- * Al-Obour General Hospital mark.
+ * Al-Madinah Hospital mark.
  *
  * A rounded shield carrying a cross, with a pulse trace crossing its centre.
  * The two ideas the mark has to carry are "hospital" and "monitored" — the
@@ -28,18 +28,18 @@ interface LogoProps {
 }
 
 function inkFor(theme?: LogoTheme): string {
-  if (theme === "light") return "#0B3D46";
-  if (theme === "dark") return "#E8F4F6";
+  if (theme === "light") return "#0A3355";
+  if (theme === "dark") return "#DCEBF8";
   return "var(--logo-ink)";
 }
 
 function accentFor(theme?: LogoTheme): string {
-  if (theme === "light") return "#12817F";
-  if (theme === "dark") return "#2FB6B0";
+  if (theme === "light") return "#0E6BB8";
+  if (theme === "dark") return "#3D9BE0";
   return "var(--logo-accent)";
 }
 
-function ObourMark({ size, theme }: { size: number; theme?: LogoTheme }) {
+function MadinahMark({ size, theme }: { size: number; theme?: LogoTheme }) {
   const ink = inkFor(theme);
   const accent = accentFor(theme);
   return (
@@ -93,8 +93,8 @@ function Wordmark({
           color: ink,
         }}
       >
-        Al-Obour
-        <span style={{ opacity: 0.62, fontWeight: 500 }}> General Hospital</span>
+        Al-Madinah
+        <span style={{ opacity: 0.62, fontWeight: 500 }}> Hospital</span>
       </span>
       {bilingual && (
         <span
@@ -116,13 +116,13 @@ function Wordmark({
 }
 
 function _Logo({ variant = "mark", theme, size = 20, className = "", bilingual }: LogoProps) {
-  if (variant === "mark") return <ObourMark size={size} theme={theme} />;
+  if (variant === "mark") return <MadinahMark size={size} theme={theme} />;
   if (variant === "wordmark") {
     return <Wordmark size={size} theme={theme} bilingual={bilingual} className={className} />;
   }
   return (
     <span className={`inline-flex items-center gap-2.5 ${className}`}>
-      <ObourMark size={size * 1.35} theme={theme} />
+      <MadinahMark size={size * 1.35} theme={theme} />
       <Wordmark size={size} theme={theme} bilingual={bilingual} />
     </span>
   );

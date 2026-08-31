@@ -38,7 +38,7 @@ export class RouteErrorBoundary extends Component<Props, State> {
   }
 
   componentDidCatch(error: Error, info: { componentStack?: string | null }) {
-    console.error("[Al-Obour] Page error:", error, info.componentStack);
+    console.error("[Al-Madinah] Page error:", error, info.componentStack);
     reportError(error, { componentStack: info.componentStack, route: this.props.resetKey });
   }
 

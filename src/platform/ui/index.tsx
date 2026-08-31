@@ -1,7 +1,7 @@
 /**
  * Clinical page primitives.
  *
- * Every module screen in Al-Obour is built from these. They exist because the
+ * Every module screen in Al-Madinah is built from these. They exist because the
  * system this was branched from had each page reinvent its own table, filter
  * bar and status pill — thirty near-identical implementations that drifted
  * apart on spacing, empty states and RTL handling. One set of primitives, one
@@ -20,6 +20,7 @@ import { Search, X, Inbox, Loader2, ChevronRight, ArrowUpDown } from "lucide-rea
 import { useLanguage } from "@/app/context/LanguageContext";
 import { useAuth } from "@/app/context/AuthContext";
 import { getDataSource, type DataSource } from "@/platform/data/repository";
+import { subscribe as subscribeToStore } from "@/platform/data/store";
 
 // ─── Shared class strings ─────────────────────────────────
 
@@ -536,6 +537,10 @@ export function useCollection<K extends TableKey>(
     return () => { cancelled = true; };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [table, wsId, nonce, ...deps]);
+
+  // Local writes refresh every open collection, so a form that saves a row
+  // updates the list behind it without the caller wiring anything up.
+  useEffect(() => subscribeToStore(() => setNonce((n) => n + 1)), []);
 
   return {
     rows: rows as Awaited<ReturnType<DataSource[K]["list"]>>,

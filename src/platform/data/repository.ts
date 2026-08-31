@@ -14,6 +14,7 @@ import { supabase, isDemoMode } from "@/platform/lib/supabase";
 import { DataError, ValidationError, type DataOp } from "@/platform/lib/errors";
 import { reportError } from "@/platform/lib/sentry";
 import { validateMoneyWrite } from "@/platform/lib/schemas/money-schemas";
+import * as store from "@/platform/data/store";
 import type { Database } from "@/domain/types";
 import {
   // Facilities, staff and supply chain
@@ -212,13 +213,13 @@ function demoCol(row: Record<string, unknown>, col: string): unknown {
 
 function makeDemoAdapter<T>(loader: () => T[], table = "demo"): EntityAdapter<T> {
   return {
-    async list() { return loader(); },
+    async list() { return store.applyPatch(table, loader()); },
 
     // Mirrors the Supabase listPaged semantics so pages behave identically
     // in demo and live mode (filters → eq/contains, search → OR ilike).
     async listPaged(_ws, opts = {}) {
       const { page, pageSize } = clampPage(opts);
-      let rows = loader() as Array<Record<string, unknown>>;
+      let rows = store.applyPatch(table, loader()) as Array<Record<string, unknown>>;
       if (opts.filters) {
         rows = rows.filter((r) => Object.entries(opts.filters!).every(([k, v]) =>
           Array.isArray(v)
@@ -258,19 +259,26 @@ function makeDemoAdapter<T>(loader: () => T[], table = "demo"): EntityAdapter<T>
         pageSize,
       };
     },
-    async get(_ws, id) { return loader().find((r: unknown) => (r as { id: string }).id === id) ?? null; },
+    async get(_ws, id) {
+      return store.applyPatch(table, loader()).find((r: unknown) => (r as { id: string }).id === id) ?? null;
+    },
+    // Demo writes are real. They land in the localStorage overlay, survive a
+    // reload, and are visible to every surface and every open tab — see
+    // platform/data/store.
     async create(ws, data) {
       guardWrite("create", table, data as Record<string, unknown>, ws);
-      console.warn("[DS] Demo mode — create is ephemeral");
-      return { ...data, id: `demo-${Date.now()}` } as T;
+      return store.insert(table, data as Record<string, unknown>) as T;
     },
-    async update(ws, _id, data) {
+    async update(ws, id, data) {
       guardWrite("update", table, data as Record<string, unknown>, ws);
-      console.warn("[DS] Demo mode — update is ephemeral");
-      return data as T;
+      store.patch(table, id, data as Record<string, unknown>);
+      const row = store
+        .applyPatch(table, loader())
+        .find((r: unknown) => (r as { id: string }).id === id);
+      return (row ?? null) as T;
     },
-    async remove() {
-      console.warn("[DS] Demo mode — delete is ephemeral");
+    async remove(_ws, id) {
+      store.drop(table, id);
       return true;
     },
   };

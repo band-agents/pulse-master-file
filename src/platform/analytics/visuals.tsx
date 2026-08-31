@@ -1,7 +1,7 @@
 /**
  * Visual library.
  *
- * Every chart in Al-Obour is one of these, drawn as inline SVG against the
+ * Every chart in Al-Madinah is one of these, drawn as inline SVG against the
  * theme's chart tokens. No charting dependency: the shapes needed are simple,
  * the token palette has to be honoured exactly in both themes, and a library
  * that re-themes itself on upgrade is a liability on a clinical dashboard.

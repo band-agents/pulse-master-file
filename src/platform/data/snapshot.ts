@@ -16,6 +16,7 @@
 
 import { useEffect, useState, useMemo } from "react";
 import { getDataSource } from "@/platform/data/repository";
+import { subscribe } from "@/platform/data/store";
 import { useAuth } from "@/app/context/AuthContext";
 import type { Database } from "@/domain/types";
 
@@ -186,6 +187,12 @@ export function useSnapshot(): SnapshotState {
 
     return () => { cancelled = true; };
   }, [wsId, nonce]);
+
+  // Any local write re-reads the snapshot. This is what makes the three
+  // surfaces feel like one hospital: a patient booking in the portal shows up
+  // on the clinic list and the ward board without anyone pressing refresh,
+  // including when those screens are open in a different browser tab.
+  useEffect(() => subscribe(() => setNonce((n) => n + 1)), []);
 
   return useMemo(
     () => ({ snapshot, loading, failed, takenAt, reload: () => setNonce((n) => n + 1) }),

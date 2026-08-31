@@ -1,5 +1,5 @@
 /**
- * Al-Obour General Hospital — single source of truth for the system's identity.
+ * Al-Madinah Hospital — single source of truth for the system's identity.
  *
  * Anywhere the application names itself, builds a storage key, names an export
  * or stamps a code, it comes from here. No bare name literals anywhere else:
@@ -9,13 +9,13 @@
 
 export const BRAND = {
   /** Display name, English. */
-  name: "Al-Obour General Hospital",
+  name: "Al-Madinah Hospital",
   /** Display name, Arabic. */
-  nameAr: "مستشفى العبور العام",
+  nameAr: "مستشفى المدينة",
 
   /** Short form, for tight chrome like the top bar and browser tab. */
-  shortName: "Al-Obour",
-  shortNameAr: "العبور",
+  shortName: "Al-Madinah",
+  shortNameAr: "المدينة",
 
   /** What the system is, for titles and sign-in surfaces. */
   tagline: "Hospital Information System",
@@ -25,22 +25,22 @@ export const BRAND = {
   assistant: "Sanad",
   assistantAr: "سند",
 
-  /** Prefix for localStorage keys — `alobour_role`, etc. */
-  storagePrefix: "alobour_",
-  /** Prefix for generated downloads — `alobour-claims-2026-08-31.csv`. */
-  exportPrefix: "alobour-",
-  /** Prefix for generated patient-facing codes — `AOG-A1B2-X4Y5Z6`. */
-  codePrefix: "AOG",
+  /** Prefix for localStorage keys — `madinah_role`, etc. */
+  storagePrefix: "madinah_",
+  /** Prefix for generated downloads — `madinah-claims-2026-08-31.csv`. */
+  exportPrefix: "madinah-",
+  /** Prefix for generated patient-facing codes — `AMH-A1B2-X4Y5Z6`. */
+  codePrefix: "AMH",
   /** Console prefix, so logs are greppable. */
-  logPrefix: "[Al-Obour]",
+  logPrefix: "[Al-Madinah]",
 } as const;
 
-/** `storageKey("role")` -> `"alobour_role"` */
+/** `storageKey("role")` -> `"madinah_role"` */
 export function storageKey(name: string): string {
   return `${BRAND.storagePrefix}${name}`;
 }
 
-/** `exportName("claims")` -> `"alobour-claims-2026-08-31"` */
+/** `exportName("claims")` -> `"madinah-claims-2026-08-31"` */
 export function exportName(entity: string, date = new Date()): string {
   return `${BRAND.exportPrefix}${entity}-${date.toISOString().slice(0, 10)}`;
 }
@@ -50,16 +50,17 @@ export function exportName(entity: string, date = new Date()): string {
  * browser must survive a rename — losing someone's saved dashboard layout
  * because the system was renamed is not an acceptable trade.
  */
-const LEGACY_PREFIXES = ["pulse_", "bumblebee_", "thoth_"] as const;
+const LEGACY_PREFIXES = ["alobour_", "pulse_", "bumblebee_", "thoth_"] as const;
 
 const MIGRATED_KEYS = [
   "onboarding", "pending_invite", "saved_reports", "recent_pages",
   "command_history", "code_settings", "code_counters", "role",
-  "dashboards", "loadtest",
+  "dashboards", "loadtest", "store", "persona", "portal_patient",
+  "clinician",
 ] as const;
 
 /**
- * One-time copy of legacy keys onto their `alobour_` names. Idempotent, and
+ * One-time copy of legacy keys onto their `madinah_` names. Idempotent, and
  * never overwrites a value that already exists under the new key. Called once
  * at boot, before anything reads storage.
  */

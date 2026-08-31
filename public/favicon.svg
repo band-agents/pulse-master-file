@@ -1,10 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
-  <!-- Pulse favicon — signature field, graphite seal, heartbeat trace cut in
-       the field colour so the mark still reads at 16px. -->
-  <rect width="64" height="64" rx="14" fill="#F5E484"/>
-  <circle cx="32" cy="32" r="22" fill="#2B2317"/>
-  <path d="M13 33H20.5L24 24L31 44L35 29L38 33H51"
-        stroke="#F5E484" stroke-width="3.6" stroke-linecap="round"
+  <!-- Al-Madinah favicon — blue shield, white cross, navy pulse trace cut
+       across the waist so the mark still reads as "monitored" at 16px. -->
+  <rect width="64" height="64" rx="14" fill="#0E6BB8"/>
+  <path d="M27 15h10v9h9v10h-9v9H27v-9h-9V24h9v-9Z" fill="#FFFFFF" opacity="0.97"/>
+  <path d="M4 31h10l4-7 5.6 14.4 5-10.2 3.6 6H44"
+        stroke="#0A3355" stroke-width="3.6" stroke-linecap="round"
         stroke-linejoin="round" fill="none"/>
-  <circle cx="31" cy="44" r="2.6" fill="#F5E484"/>
 </svg>

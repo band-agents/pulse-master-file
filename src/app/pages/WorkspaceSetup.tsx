@@ -136,7 +136,7 @@ export default function WorkspaceSetup() {
               <input
                 id="nameEn" value={nameEn} onChange={(e) => setNameEn(e.target.value)}
                 required dir="ltr" className={`${inputCls} h-11`}
-                placeholder="Al-Obour General Hospital"
+                placeholder="Al-Madinah Hospital"
               />
             </div>
 
@@ -147,7 +147,7 @@ export default function WorkspaceSetup() {
               <input
                 id="nameAr" value={nameAr} onChange={(e) => setNameAr(e.target.value)}
                 dir="rtl" className={`${inputCls} h-11`}
-                placeholder="مستشفى العبور العام"
+                placeholder="مستشفى المدينة"
               />
             </div>
 

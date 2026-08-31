@@ -109,130 +109,140 @@
   --radius-xl: calc(var(--radius) + 3px);
   --radius-2xl: calc(var(--radius) + 7px);
 }
-
 /* ══════════════════════════════════════════════════════════
-   AL-OBOUR GENERAL HOSPITAL — CLINICAL PALETTE
+   AL-MADINAH HOSPITAL — CLINICAL PALETTE
    ══════════════════════════════════════════════════════════
-   The signature is a deep medical teal on a cool, near-white ground.
+   The signature is medical blue on white. Not teal, not a tech blue:
+   the specific deep, slightly-green blue of scrubs, ward signage and
+   surgical drape — the colour a hospital already uses on itself.
 
    One rule governs the whole system, and it is the opposite of a
    consumer-brand rule: the primary is dark enough to be BOTH a fill and
-   an ink. Teal at 30% lightness clears 7:1 on the canvas, so a link, an
+   an ink. Blue at 32% lightness clears 8:1 on the canvas, so a link, an
    icon and a filled button can all use the same token without a separate
    "safe text" colour and without anyone having to remember an exception.
 
+   Chrome is WHITE, not grey. A hospital reads as clean before it reads
+   as anything else, and a grey toolbar over a white page reads as dust.
+   The single blue rule under the top bar carries the brand instead.
+
    Status hues are reserved. Green, amber and red mean stable, caution and
-   critical — nothing decorative is allowed to borrow them, because on a
-   ward a red chip has to mean one thing only. Chart series live in their
-   own hue family (--chart-*) for the same reason.
+   critical — nothing decorative may borrow them, because on a ward a red
+   chip has to mean one thing only. That reservation is also why --info is
+   a cyan rather than a blue: with a blue primary, an informational chip in
+   the primary hue would be indistinguishable from a brand element.
+   Chart series live in their own family (--chart-*) for the same reason.
    ══════════════════════════════════════════════════════════ */
 
 /* ─── LIGHT ──────────────────────────────────────────────── */
 :root {
-  --button-outline: rgba(9, 30, 38, .06);
-  --badge-outline: rgba(9, 30, 38, .05);
+  --button-outline: rgba(10, 30, 50, .06);
+  --badge-outline: rgba(10, 30, 50, .05);
 
   --opaque-button-border-intensity: -8;
 
-  --elevate-1: rgba(12, 40, 50, .028);
-  --elevate-2: rgba(12, 40, 50, .06);
+  --elevate-1: rgba(14, 42, 68, .028);
+  --elevate-2: rgba(14, 42, 68, .06);
 
-  /* Cool clinical ground — a hair of teal in the grey, never warm. */
-  --background: 200 24% 97%;
-  --foreground: 202 32% 15%;
-  --border: 200 18% 88%;
+  /* Cool clinical ground — a hair of blue in the white, never warm. */
+  --background: 208 38% 98%;
+  --foreground: 212 42% 14%;
+  --border: 208 24% 88%;
 
   --card: 0 0% 100%;
-  --card-foreground: 202 32% 15%;
-  --card-border: 200 18% 89%;
+  --card-foreground: 212 42% 14%;
+  --card-border: 208 24% 90%;
 
-  /* Chrome sits a step cooler and darker than the canvas. */
-  --sidebar: 202 26% 94%;
-  --sidebar-foreground: 202 30% 18%;
-  --sidebar-border: 200 18% 87%;
-  --sidebar-primary: 184 72% 28%;
+  /* Chrome is white. The blue lives in the border and the mark. */
+  --sidebar: 0 0% 100%;
+  --sidebar-foreground: 212 40% 17%;
+  --sidebar-border: 208 26% 87%;
+  --sidebar-primary: 208 84% 32%;
   --sidebar-primary-foreground: 0 0% 100%;
-  --sidebar-accent: 186 42% 90%;
-  --sidebar-accent-foreground: 190 45% 20%;
-  --sidebar-ring: 184 72% 30%;
+  --sidebar-accent: 206 68% 93%;
+  --sidebar-accent-foreground: 210 66% 24%;
+  --sidebar-ring: 208 84% 36%;
 
   --popover: 0 0% 100%;
-  --popover-foreground: 202 32% 15%;
-  --popover-border: 200 18% 89%;
+  --popover-foreground: 212 42% 14%;
+  --popover-border: 208 24% 90%;
 
-  /* Medical teal. Legal as a fill AND as ink — see the note above. */
-  --primary: 184 74% 28%;
+  /* Medical blue. Legal as a fill AND as ink — see the note above. */
+  --primary: 208 84% 32%;
   --primary-foreground: 0 0% 100%;
 
-  --secondary: 200 20% 93%;
-  --secondary-foreground: 202 28% 22%;
+  --secondary: 208 28% 93%;
+  --secondary-foreground: 212 38% 22%;
 
-  --muted: 200 20% 94%;
-  --muted-foreground: 202 12% 44%;
+  --muted: 208 28% 94%;
+  --muted-foreground: 210 14% 43%;
 
-  --accent: 186 44% 91%;
-  --accent-foreground: 190 45% 20%;
+  --accent: 206 66% 93%;
+  --accent-foreground: 210 66% 24%;
 
-  --destructive: 358 66% 46%;
+  --destructive: 356 68% 45%;
   --destructive-foreground: 0 0% 100%;
 
-  --input: 200 14% 55%;
-  --ring: 184 74% 32%;
+  --input: 208 18% 54%;
+  --ring: 208 84% 36%;
 
-  /* Brand triad. `brand` is the light fill, `brand-ink` the legible ink,
+  /* Brand triad. `brand` is the fill, `brand-ink` the legible ink,
      `brand-wash` the selected-row tint. */
-  --brand: 184 74% 28%;
-  --brand-ink: 185 78% 24%;
-  --brand-wash: 186 48% 94%;
+  --brand: 208 84% 32%;
+  --brand-ink: 210 88% 27%;
+  --brand-wash: 206 70% 95%;
 
-  /* Reserved status hues. */
-  --success: 154 58% 30%;
+  /* Reserved status hues. Green reads "stable" and is the one warm-adjacent
+     colour allowed on a ward screen, because a recovering patient should
+     look different from a merely quiet one. */
+  --success: 152 60% 28%;
   --success-foreground: 0 0% 100%;
-  --warning: 32 84% 38%;
+  --warning: 32 88% 37%;
   --warning-foreground: 0 0% 100%;
-  --info: 205 78% 38%;
+  --info: 192 82% 30%;
   --info-foreground: 0 0% 100%;
 
-  /* Analytics accent — indigo, deliberately outside the status families. */
-  --data: 256 56% 48%;
-  --data-wash: 256 60% 95%;
+  /* Analytics accent — violet, deliberately outside every status family
+     and far enough from the blue primary to never read as chrome. */
+  --data: 268 60% 50%;
+  --data-wash: 268 62% 96%;
 
   /* Eight chart series, checked for separability under deuteranopia and
-     protanopia and against the teal chrome they sit on. Ordered so the
+     protanopia and against the white chrome they sit on. Ordered so the
      first three are the most distinct — most charts use only those. */
-  --chart-1: 196 76% 38%;
-  --chart-2: 256 52% 54%;
-  --chart-3: 28 82% 46%;
-  --chart-4: 166 58% 32%;
-  --chart-5: 340 58% 50%;
-  --chart-6: 212 60% 44%;
-  --chart-7: 44 76% 42%;
-  --chart-8: 288 40% 46%;
+  --chart-1: 205 80% 42%;
+  --chart-2: 268 54% 56%;
+  --chart-3: 24 84% 46%;
+  --chart-4: 168 62% 32%;
+  --chart-5: 338 62% 50%;
+  --chart-6: 44 80% 42%;
+  --chart-7: 192 74% 36%;
+  --chart-8: 288 38% 48%;
 
   /* One family for both scripts; mono for every identifier and figure. */
-  --app-font-sans: 'IBM Plex Sans Arabic', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-  --app-font-display: 'IBM Plex Sans Arabic', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-  --app-font-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  --app-font-sans: "IBM Plex Sans Arabic", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --app-font-display: "IBM Plex Sans Arabic", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --app-font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
 
   /* Crisper than a consumer product. Clinical density reads better square. */
   --radius: 0.625rem;
 
   /* Cool-tinted shadows — a warm shadow on a cool ground looks dirty. */
-  --shadow-2xs: 0 1px 2px 0 hsl(202 40% 16% / .04);
-  --shadow-xs:  0 1px 3px 0 hsl(202 40% 16% / .05), 0 1px 2px -1px hsl(202 40% 16% / .04);
-  --shadow-sm:  0 2px 4px 0 hsl(202 40% 16% / .05), 0 1px 3px -1px hsl(202 40% 16% / .04);
-  --shadow:     0 4px 8px -1px hsl(202 40% 16% / .07), 0 2px 4px -2px hsl(202 40% 16% / .04);
-  --shadow-md:  0 8px 16px -3px hsl(202 40% 16% / .08), 0 4px 6px -4px hsl(202 40% 16% / .04);
-  --shadow-lg:  0 16px 28px -5px hsl(202 40% 16% / .09), 0 8px 10px -6px hsl(202 40% 16% / .04);
-  --shadow-xl:  0 24px 40px -8px hsl(202 40% 16% / .10), 0 12px 16px -8px hsl(202 40% 16% / .04);
-  --shadow-2xl: 0 40px 64px -12px hsl(202 40% 16% / .16);
+  --shadow-2xs: 0 1px 2px 0 hsl(212 44% 16% / .04);
+  --shadow-xs:  0 1px 3px 0 hsl(212 44% 16% / .05), 0 1px 2px -1px hsl(212 44% 16% / .04);
+  --shadow-sm:  0 2px 4px 0 hsl(212 44% 16% / .05), 0 1px 3px -1px hsl(212 44% 16% / .04);
+  --shadow:     0 4px 8px -1px hsl(212 44% 16% / .07), 0 2px 4px -2px hsl(212 44% 16% / .04);
+  --shadow-md:  0 8px 16px -3px hsl(212 44% 16% / .08), 0 4px 6px -4px hsl(212 44% 16% / .04);
+  --shadow-lg:  0 16px 28px -5px hsl(212 44% 16% / .09), 0 8px 10px -6px hsl(212 44% 16% / .04);
+  --shadow-xl:  0 24px 40px -8px hsl(212 44% 16% / .10), 0 12px 16px -8px hsl(212 44% 16% / .04);
+  --shadow-2xl: 0 40px 64px -12px hsl(212 44% 16% / .16);
 
   --tracking-normal: -0.009em;
   --spacing: 0.25rem;
 
-  /* Hospital mark — teal cross with a pulse trace. */
-  --logo-ink: #0B3D46;
-  --logo-accent: #12817F;
+  /* Hospital mark — blue shield, white cross, navy pulse trace. */
+  --logo-ink: #0A3355;
+  --logo-accent: #0E6BB8;
 
   --sidebar-primary-border: hsl(var(--sidebar-primary));
   --sidebar-primary-border: hsl(from hsl(var(--sidebar-primary)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
@@ -251,92 +261,92 @@
 }
 
 /* ─── DARK ───────────────────────────────────────────────── */
-/* Night shifts run on this. The ground is a deep desaturated slate-blue,
-   never pure black: a true black panel next to a lit corridor is harder to
-   read, not easier. Teal lifts to 46% lightness so it stays legible without
-   glowing. */
+/* Night shifts run on this. The ground is a deep desaturated navy, never
+   pure black: a true black panel next to a lit corridor is harder to read,
+   not easier. Blue lifts to 56% lightness so it stays legible without
+   glowing on a darkened ward. */
 .dark {
   --button-outline: rgba(255, 255, 255, .07);
   --badge-outline: rgba(255, 255, 255, .05);
 
   --opaque-button-border-intensity: 8;
 
-  --elevate-1: rgba(214, 238, 244, .04);
-  --elevate-2: rgba(214, 238, 244, .085);
+  --elevate-1: rgba(214, 232, 248, .04);
+  --elevate-2: rgba(214, 232, 248, .085);
 
-  --background: 204 30% 9%;
-  --foreground: 195 20% 92%;
-  --border: 204 16% 22%;
+  --background: 212 34% 10%;
+  --foreground: 205 24% 93%;
+  --border: 212 18% 23%;
 
-  --card: 204 26% 13%;
-  --card-foreground: 195 20% 92%;
-  --card-border: 204 16% 22%;
+  --card: 212 30% 14%;
+  --card-foreground: 205 24% 93%;
+  --card-border: 212 18% 23%;
 
-  --sidebar: 205 32% 7%;
-  --sidebar-foreground: 195 20% 92%;
-  --sidebar-border: 204 18% 17%;
-  --sidebar-primary: 180 58% 46%;
-  --sidebar-primary-foreground: 200 45% 8%;
-  --sidebar-accent: 200 18% 20%;
-  --sidebar-accent-foreground: 186 40% 88%;
-  --sidebar-ring: 180 58% 48%;
+  --sidebar: 213 38% 8%;
+  --sidebar-foreground: 205 24% 93%;
+  --sidebar-border: 212 20% 18%;
+  --sidebar-primary: 205 78% 56%;
+  --sidebar-primary-foreground: 212 50% 9%;
+  --sidebar-accent: 210 22% 21%;
+  --sidebar-accent-foreground: 205 52% 88%;
+  --sidebar-ring: 205 78% 58%;
 
-  --popover: 204 26% 12%;
-  --popover-foreground: 195 20% 92%;
-  --popover-border: 204 16% 22%;
+  --popover: 212 30% 13%;
+  --popover-foreground: 205 24% 93%;
+  --popover-border: 212 18% 23%;
 
-  --primary: 180 58% 44%;
-  --primary-foreground: 200 50% 8%;
+  --primary: 205 78% 56%;
+  --primary-foreground: 212 52% 9%;
 
-  --secondary: 204 14% 19%;
-  --secondary-foreground: 195 20% 92%;
+  --secondary: 212 16% 20%;
+  --secondary-foreground: 205 24% 93%;
 
-  --muted: 204 14% 18%;
-  --muted-foreground: 200 10% 62%;
+  --muted: 212 16% 19%;
+  --muted-foreground: 208 12% 63%;
 
-  --accent: 200 18% 21%;
-  --accent-foreground: 186 40% 88%;
+  --accent: 210 22% 22%;
+  --accent-foreground: 205 52% 88%;
 
-  --destructive: 358 62% 58%;
-  --destructive-foreground: 355 30% 10%;
+  --destructive: 356 64% 59%;
+  --destructive-foreground: 355 32% 10%;
 
-  --input: 204 14% 42%;
-  --ring: 180 58% 48%;
+  --input: 212 16% 43%;
+  --ring: 205 78% 58%;
 
-  --brand: 180 58% 44%;
-  --brand-ink: 180 56% 62%;
-  --brand-wash: 190 34% 18%;
+  --brand: 205 78% 56%;
+  --brand-ink: 203 76% 70%;
+  --brand-wash: 209 38% 19%;
 
-  --success: 154 48% 52%;
-  --success-foreground: 154 40% 8%;
-  --warning: 36 78% 58%;
-  --warning-foreground: 36 45% 8%;
-  --info: 205 70% 60%;
-  --info-foreground: 205 45% 8%;
+  --success: 152 50% 52%;
+  --success-foreground: 152 42% 8%;
+  --warning: 36 80% 58%;
+  --warning-foreground: 36 46% 8%;
+  --info: 190 70% 54%;
+  --info-foreground: 190 46% 8%;
 
-  --data: 256 62% 68%;
-  --data-wash: 256 32% 20%;
+  --data: 268 66% 70%;
+  --data-wash: 268 34% 21%;
 
-  --chart-1: 195 70% 56%;
-  --chart-2: 256 60% 70%;
-  --chart-3: 28 80% 60%;
-  --chart-4: 166 52% 50%;
-  --chart-5: 340 62% 66%;
-  --chart-6: 212 62% 62%;
-  --chart-7: 44 74% 58%;
-  --chart-8: 288 44% 64%;
+  --chart-1: 203 76% 60%;
+  --chart-2: 268 62% 72%;
+  --chart-3: 26 82% 60%;
+  --chart-4: 168 54% 50%;
+  --chart-5: 338 64% 66%;
+  --chart-6: 44 76% 58%;
+  --chart-7: 190 68% 54%;
+  --chart-8: 288 42% 66%;
 
-  --shadow-2xs: 0 1px 2px 0 hsl(205 45% 3% / .34);
-  --shadow-xs:  0 1px 3px 0 hsl(205 45% 3% / .40), 0 1px 2px -1px hsl(205 45% 3% / .28);
-  --shadow-sm:  0 2px 4px 0 hsl(205 45% 3% / .40), 0 1px 3px -1px hsl(205 45% 3% / .28);
-  --shadow:     0 4px 8px -1px hsl(205 45% 3% / .44), 0 2px 4px -2px hsl(205 45% 3% / .28);
-  --shadow-md:  0 8px 16px -3px hsl(205 45% 3% / .48), 0 4px 6px -4px hsl(205 45% 3% / .28);
-  --shadow-lg:  0 16px 28px -5px hsl(205 45% 3% / .54), 0 8px 10px -6px hsl(205 45% 3% / .28);
-  --shadow-xl:  0 24px 40px -8px hsl(205 45% 3% / .58), 0 12px 16px -8px hsl(205 45% 3% / .28);
-  --shadow-2xl: 0 40px 64px -12px hsl(205 45% 3% / .68);
+  --shadow-2xs: 0 1px 2px 0 hsl(213 50% 3% / .34);
+  --shadow-xs:  0 1px 3px 0 hsl(213 50% 3% / .40), 0 1px 2px -1px hsl(213 50% 3% / .28);
+  --shadow-sm:  0 2px 4px 0 hsl(213 50% 3% / .40), 0 1px 3px -1px hsl(213 50% 3% / .28);
+  --shadow:     0 4px 8px -1px hsl(213 50% 3% / .44), 0 2px 4px -2px hsl(213 50% 3% / .28);
+  --shadow-md:  0 8px 16px -3px hsl(213 50% 3% / .48), 0 4px 6px -4px hsl(213 50% 3% / .28);
+  --shadow-lg:  0 16px 28px -5px hsl(213 50% 3% / .54), 0 8px 10px -6px hsl(213 50% 3% / .28);
+  --shadow-xl:  0 24px 40px -8px hsl(213 50% 3% / .58), 0 12px 16px -8px hsl(213 50% 3% / .28);
+  --shadow-2xl: 0 40px 64px -12px hsl(213 50% 3% / .68);
 
-  --logo-ink: #E8F4F6;
-  --logo-accent: #2FB6B0;
+  --logo-ink: #DCEBF8;
+  --logo-accent: #3D9BE0;
 
   --sidebar-primary-border: hsl(var(--sidebar-primary));
   --sidebar-primary-border: hsl(from hsl(var(--sidebar-primary)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
@@ -353,6 +363,7 @@
   --destructive-border: hsl(var(--destructive));
   --destructive-border: hsl(from hsl(var(--destructive)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
 }
+
 
 @layer base {
   * {

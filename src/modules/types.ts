@@ -1,7 +1,7 @@
 /**
  * Module contract.
  *
- * Al-Obour is assembled from self-describing modules rather than a central
+ * Al-Madinah is assembled from self-describing modules rather than a central
  * route table and a hand-maintained navigation tree. A module declares its
  * own identity, its views, who it is for, and the handful of numbers that
  * represent it on the Hub — and the shell, the router, the command palette

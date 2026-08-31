@@ -1,5 +1,5 @@
 /**
- * Al-Obour General Hospital — application root.
+ * Al-Madinah Hospital — application root.
  *
  * There is no route table here. Every clinical and administrative route is
  * generated from `modules/registry`, so the router cannot disagree with the
@@ -131,7 +131,7 @@ function AppShell() {
 /**
  * Entry guard.
  *
- * There is no landing page. Al-Obour is internal hospital software, not a
+ * There is no landing page. Al-Madinah is internal hospital software, not a
  * product with a public front door — anyone reaching it is staff who want the
  * system, and putting a brochure in front of a nurse on a night shift is a
  * cost with no benefit. `/` is either the Hub or the sign-in screen, never

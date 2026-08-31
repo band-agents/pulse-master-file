@@ -186,7 +186,7 @@ export default function AuthPage() {
             <input
               id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)}
               required autoComplete="email" dir="ltr" className={`${inputCls} h-11`}
-              placeholder="name@alobour.sa"
+              placeholder="name@almadinah.sa"
             />
           </div>
 
