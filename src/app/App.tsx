@@ -19,7 +19,6 @@ import { Loader2 } from "lucide-react";
 import { Toaster } from "@/platform/ui/primitives/sonner";
 import { TooltipProvider } from "@/platform/ui/primitives/tooltip";
 import { LanguageProvider } from "@/app/context/LanguageContext";
-import { OnboardingProvider, useOnboarding } from "@/app/context/OnboardingContext";
 import { AuthProvider, useAuth } from "@/app/context/AuthContext";
 import { isDemoMode } from "@/platform/lib/supabase";
 import { Logo } from "@/app/components/Logo";
@@ -34,7 +33,6 @@ import { useSnapshot } from "@/platform/data/snapshot";
 
 import AuthPage from "./pages/AuthPage";
 import AuthCallback from "./pages/AuthCallback";
-import Landing from "./pages/Landing";
 import WorkspaceSetup from "./pages/WorkspaceSetup";
 import InviteAccept from "./pages/InviteAccept";
 import NotFound from "./pages/not-found";
@@ -130,30 +128,28 @@ function AppShell() {
 
 // ─── Entry guards ─────────────────────────────────────────
 
+/**
+ * Entry guard.
+ *
+ * There is no landing page. Al-Obour is internal hospital software, not a
+ * product with a public front door — anyone reaching it is staff who want the
+ * system, and putting a brochure in front of a nurse on a night shift is a
+ * cost with no benefit. `/` is either the Hub or the sign-in screen, never
+ * marketing.
+ */
 function Router() {
-  const { onboardingData } = useOnboarding();
   const { isAuthenticated, loading, workspace, workspaceLoading } = useAuth();
   // Subscribe to wouter's location: reading window.location here would not
-  // re-render on a client-side navigate, which is how the landing page's
-  // buttons used to change the URL without changing the view.
+  // re-render on a client-side navigate.
   const [path] = useLocation();
-
-  if (path === "/welcome") return <Landing />;
-
-  if (SKIP_AUTH) {
-    if (path === "/auth" || path.startsWith("/auth/")) return <Redirect to="/" />;
-    return <AppShell />;
-  }
 
   // Invitation links are public, ahead of every auth guard.
   if (path.startsWith("/invite/")) return <InviteAccept />;
 
-  if (isDemoMode) {
-    if (!onboardingData?.completed) {
-      if (path === "/") return <Landing />;
-      return <WorkspaceSetup />;
-    }
-    if (path === "/auth") return <Redirect to="/" />;
+  // Demo deployments have no Supabase credentials and the dev bypass skips
+  // auth outright. Both open straight on the Hub.
+  if (SKIP_AUTH || isDemoMode) {
+    if (path === "/auth" || path.startsWith("/auth/")) return <Redirect to="/" />;
     return <AppShell />;
   }
 
@@ -162,10 +158,7 @@ function Router() {
   if (path.startsWith("/auth/callback")) return <AuthCallback />;
 
   if (loading) return <BootScreen />;
-  if (!isAuthenticated) {
-    if (path === "/") return <Landing />;
-    return <AuthPage />;
-  }
+  if (!isAuthenticated) return <AuthPage />;
   if (workspaceLoading) return <BootScreen />;
   if (!workspace) return <WorkspaceSetup />;
 
@@ -179,12 +172,10 @@ export default function App() {
         <TooltipProvider>
           <LanguageProvider>
             <AuthProvider>
-              <OnboardingProvider>
                 <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
                   <Router />
                 </WouterRouter>
                 <Toaster />
-              </OnboardingProvider>
             </AuthProvider>
           </LanguageProvider>
         </TooltipProvider>
