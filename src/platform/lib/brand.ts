@@ -56,7 +56,7 @@ const MIGRATED_KEYS = [
   "onboarding", "pending_invite", "saved_reports", "recent_pages",
   "command_history", "code_settings", "code_counters", "role",
   "dashboards", "loadtest", "store", "persona", "portal_patient",
-  "clinician",
+  "clinician", "lang",
 ] as const;
 
 /**

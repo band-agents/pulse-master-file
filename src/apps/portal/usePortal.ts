@@ -56,6 +56,41 @@ export interface PortalData {
   loading: boolean;
 }
 
+/**
+ * Whether a result is critical, deciding it from three independent signals
+ * rather than from the flag column alone.
+ *
+ * The flag is set by whichever analyser or interface produced the result and
+ * cannot be relied on: a troponin of 890 ng/L against a reference of under 14
+ * arrives from a real analyser flagged merely `high`, because the laboratory's
+ * own convention is to flag troponin on the delta rather than the absolute.
+ * Trusting that single field released a myocardial infarction to a patient's
+ * phone as an orange chip reading "outside range".
+ *
+ * So three things are checked, and any one of them withholds:
+ *
+ *   1. an explicit critical flag;
+ *   2. a recorded critical notification — if somebody was telephoned about
+ *      this value, it is critical by definition, whatever the flag says;
+ *   3. a gross magnitude against the reference interval, as a backstop for
+ *      when neither of the first two was coded.
+ *
+ * The multiple in (3) is deliberately three rather than the 1.2 used for
+ * clinician-facing shading. A fifth above the upper limit is common and
+ * usually unremarkable; withholding at that threshold would hide almost every
+ * abnormal result and teach patients that the portal shows them nothing.
+ */
+function isCritical(r: Snapshot["labResults"][number]): boolean {
+  if (r.flag === "critical_high" || r.flag === "critical_low") return true;
+  if (r.critical_notified_at || r.critical_notified_to) return true;
+
+  const v = r.value_numeric;
+  if (v === null) return false;
+  if (r.reference_high !== null && r.reference_high > 0 && v >= r.reference_high * 3) return true;
+  if (r.reference_low !== null && r.reference_low > 0 && v <= r.reference_low / 3) return true;
+  return false;
+}
+
 export function usePortal(): PortalData {
   const { persona } = usePersona();
   const { snapshot, loading } = useSnapshot();
@@ -101,9 +136,7 @@ export function usePortal(): PortalData {
     const results: PortalResult[] = myLabOrders
       .map((order) => {
         const lines = snapshot.labResults.filter((r) => r.lab_order_id === order.id);
-        const anyCritical = lines.some(
-          (r) => r.flag === "critical_high" || r.flag === "critical_low",
-        );
+        const anyCritical = lines.some(isCritical);
         const anyAbnormal = lines.some(
           (r) => r.flag === "high" || r.flag === "low" || r.flag === "abnormal",
         );
